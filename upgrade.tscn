@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://brvxeow6fr77i"]
+
+[ext_resource type="Script" path="res://upgrade.gd" id="1_ryw8b"]
+[ext_resource type="Texture2D" uid="uid://pkoggi2tvg3r" path="res://icon.svg" id="2_ylwyu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xfuxd"]
+
+[node name="Upgrade" type="Area2D"]
+script = ExtResource("1_ryw8b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_xfuxd")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_ylwyu")

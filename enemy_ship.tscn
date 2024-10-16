@@ -1,8 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://ch7ypmqspu0qc"]
+[gd_scene load_steps=3 format=3 uid="uid://ch7ypmqspu0qc"]
+
+[ext_resource type="Script" path="res://enemy_ship.gd" id="1_xh7n8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jlm0x"]
 
 [node name="EnemyShip" type="CharacterBody2D"]
+script = ExtResource("1_xh7n8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_jlm0x")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
