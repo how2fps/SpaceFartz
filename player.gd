@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @export var weapon_scene: PackedScene = preload("res://weapon.tscn")
+@export var upgrade_scene: PackedScene = preload("res://upgrade.tscn")
 var weapon
 
 var speed = 300.0
@@ -37,9 +38,16 @@ func _ready():
 	weapon = weapon_scene.instantiate()
 	add_child(weapon)  # Add the weapon as a child of the player character
 	weapon.position = Vector2(0, -50)  # Adjust weapon's position relative to the player
+	weapon.fire_rate = fire_rate
 	weapon.connect("shot_fired", _on_weapon_shot_fired)
+	upgrade_scene.connect("collected", _on_upgrade_collected)
 
 
 func _on_weapon_shot_fired():
 	#print("Weapon shot fired!")
 	pass
+	
+func _on_upgrade_collected():
+	print('hi')
+	fire_rate -= 0.9
+	weapon.fire_rate = fire_rate

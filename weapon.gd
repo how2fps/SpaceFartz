@@ -7,10 +7,17 @@ signal shot_fired
 var last_shot_time: float = 0.0
 
 func shoot():
-	emit_signal("shot_fired")  # Emit a signal when shooting
-	var bullet_instance = bullet_scene.instantiate()
-	print(bullet_instance)
-	bullet_instance.position = global_position  # Set bullet at the weapon's position
+	var current_time = Time.get_ticks_msec()
+
+	# Check if enough time has passed since the last shot
+	if current_time - last_shot_time >= fire_rate * 1000:
+		emit_signal("shot_fired")  # Emit a signal when shooting
+		var bullet_instance = bullet_scene.instantiate()
+		bullet_instance.position = global_position
+		bullet_instance.position.y -= 70  # Set bullet at the weapon's position
+		print(global_position)
+		get_tree().current_scene.add_child(bullet_instance)
+		last_shot_time = current_time  # Update the last shot time
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

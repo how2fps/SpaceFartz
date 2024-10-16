@@ -1,13 +1,21 @@
 extends Area2D
 
-@export var bullet: PackedScene = preload("res://bullet.tscn")  # The bullet scene to instantiate
-@export var fire_rate: float = 0.5  # Firing rate for the weapon
+# Reference to the Player node (assign this in the editor or find it in code)
+@onready var player = get_tree().get_root().get_node("Main").player  # Adjust the path to your player node
+var speed: float = 300.0  # Bullet speed in pixels per second
+# Signal to notify when the upgrade is collected
+signal collected
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	# Connect the body_entered signal to a function
+	connect("body_entered", _on_body_entered)
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _on_body_entered(body):
+	if body == player:
+		emit_signal("collected")  # Emit the collected signal
+		queue_free()  # Remove the upgrade from the scene
+		
 func _process(delta):
-	pass
+	position.y += speed * delta  # Multiply by delta to ensure frame-independent movement
+	if position.y < 0 or position.y > 960: # If out of screen remove it
+		queue_free()
