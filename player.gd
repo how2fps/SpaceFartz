@@ -7,10 +7,10 @@ var weapon
 
 var _lives: int = 5
 var _movement_speed: float = 300.0
-var _fire_rate: float = 1.0
+var _fire_rate: float = 0.5
 var _bullet_count: int = 1
 
-@export var fire_rate: float = 1.0:
+@export var fire_rate: float = 0.5:
 	get:
 		return _fire_rate
 	set(value):

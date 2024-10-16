@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://dqbo1p08aij1o"]
+
+[ext_resource type="Script" path="res://start_menu.gd" id="1_kjpq7"]
+
+[node name="StartMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 60.0
+offset_top = 554.0
+offset_right = 313.0
+offset_bottom = 594.0
+script = ExtResource("1_kjpq7")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="StartButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.592
+anchor_bottom = 0.843
+offset_left = -3.0
+offset_top = -1.0
+offset_right = 1.32001
+offset_bottom = 2.28
+text = "Start"
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]

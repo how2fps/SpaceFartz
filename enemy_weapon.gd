@@ -3,9 +3,15 @@ extends Node2D
 @export var enemy_bullet_scene: PackedScene = preload("res://enemy_bullet.tscn")  # The bullet scene to instantiate
 var last_shot_time: float = 0.0
 
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	shoot()
+
 func shoot():
 	var current_time = Time.get_ticks_msec()
-
 	# Check if enough time has passed since the last shot
 	if current_time - last_shot_time >= 1 * 3000:
 		for i in range(3):
@@ -16,12 +22,4 @@ func shoot():
 			last_shot_time = current_time  # Update the last shot time
 		
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	shoot()
 	

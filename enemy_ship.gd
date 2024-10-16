@@ -2,6 +2,8 @@ extends CharacterBody2D
 
 var random = RandomNumberGenerator.new()
 
+var main_scene: Node
+
 var upgrade_fire_rate_scene: PackedScene = load("res://upgrade_fire_rate.tscn")
 var upgrade_movement_speed_scene: PackedScene = load("res://upgrade_movement_speed.tscn")
 var upgrade_lives_scene: PackedScene = load("res://upgrade_lives.tscn")
@@ -20,6 +22,7 @@ var direction: int = 1  # Direction of horizontal movement (1 for right, -1 for 
 var direction_change_interval: float = 1.0  # Time in seconds between direction changes
 
 func _ready():
+	main_scene = get_tree().current_scene
 	add_to_group("enemies")
 	if randi() % 2 == 0:
 		direction = 1  # Move right
@@ -29,7 +32,8 @@ func _ready():
 	add_child(enemy_weapon_instance)  # Add the weapon as a child of the player character
 	enemy_weapon_instance.position = Vector2(0, 50)  # Adjust weapon's position relative to the player
 	collision_area.connect("body_entered", _on_body_entered)
-	
+
+
 func _physics_process(delta):
 	position.y += enemy_ship_speed * delta
 	# Calculate the horizontal movement using sine wave
@@ -51,28 +55,29 @@ func _physics_process(delta):
 	
 	if lives <= 0:
 		queue_free()
+		main_scene.update_score(1)
 		random.randomize()  # Randomize the generator seed
 		var chance = random.randf()  # Generate a random float between 0 and 1
 		if chance <= 1:
 			var upgrade_roll = random.randf()
 			if upgrade_roll <= 0.30:
 				var upgrade_fire_rate_instance = upgrade_fire_rate_scene.instantiate()
-				get_tree().current_scene.add_child(upgrade_fire_rate_instance)  # Add it to the scene
+				main_scene.add_child(upgrade_fire_rate_instance)  # Add it to the scene
 				upgrade_fire_rate_instance.position = global_position  # Set the position of the upgrade
 				print("FIRE RATE.")
 			if upgrade_roll > 0.30 and upgrade_roll <= 0.60:
 				var upgrade_movement_speed_instance = upgrade_movement_speed_scene.instantiate()
-				get_tree().current_scene.add_child(upgrade_movement_speed_instance)  # Add it to the scene
+				main_scene.add_child(upgrade_movement_speed_instance)  # Add it to the scene
 				upgrade_movement_speed_instance.position = global_position  # Set the position of the upgrade
 				print("MOVEMENT.")
 			if upgrade_roll > 0.60 and upgrade_roll <= 0.90:
 				var upgrade_lives_instance = upgrade_lives_scene.instantiate()
-				get_tree().current_scene.add_child(upgrade_lives_instance)  # Add it to the scene
+				main_scene.add_child(upgrade_lives_instance)  # Add it to the scene
 				upgrade_lives_instance.position = global_position  # Set the position of the upgrade
 				print("HEALTH.")
 			if upgrade_roll > 0.90:
 				var upgrade_bullet_count_instance = upgrade_bullet_count_scene.instantiate()
-				get_tree().current_scene.add_child(upgrade_bullet_count_instance)  # Add it to the scene
+				main_scene.add_child(upgrade_bullet_count_instance)  # Add it to the scene
 				upgrade_bullet_count_instance.position = global_position  # Set the position of the upgrade
 				print("BULLET COUNT.")
 		else:
