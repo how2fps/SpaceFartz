@@ -26,6 +26,5 @@ func spawn_enemy():
 	var enemy_ship_instance = enemy_ship_scene.instantiate()  # Instantiate the enemy
 	var screen_size = get_viewport().get_size()  # Get the size of the screen
 
-	
 	enemy_ship_instance.position = Vector2(randf() * 540, 0)  # Random X, Y at top
 	add_child(enemy_ship_instance)  # Add the enemy instance to the scene tree
