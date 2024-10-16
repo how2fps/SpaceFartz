@@ -6,14 +6,12 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_odjla"]
 
 [node name="Bullet" type="Area2D"]
-collision_layer = 0
-monitorable = false
 script = ExtResource("1_6u6m3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_odjla")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(4.54747e-13, -2.38419e-07)
+position = Vector2(-5.96046e-08, 1)
 scale = Vector2(0.171875, 0.171875)
 texture = ExtResource("2_rvtm8")

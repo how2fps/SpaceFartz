@@ -15,7 +15,6 @@ func shoot():
 		var bullet_instance = bullet_scene.instantiate()
 		bullet_instance.position = global_position
 		bullet_instance.position.y -= 70  # Set bullet at the weapon's position
-		print(global_position)
 		get_tree().current_scene.add_child(bullet_instance)
 		last_shot_time = current_time  # Update the last shot time
 

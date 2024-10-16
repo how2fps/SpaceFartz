@@ -2,7 +2,7 @@ extends Area2D
 
 # Reference to the Player node (assign this in the editor or find it in code)
 @onready var player = get_tree().get_root().get_node("Main").player  # Adjust the path to your player node
-var speed: float = 300.0  # Bullet speed in pixels per second
+var speed: float = 200.0  # Bullet speed in pixels per second
 # Signal to notify when the upgrade is collected
 signal collected
 

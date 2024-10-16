@@ -5,10 +5,9 @@ extends CharacterBody2D
 var weapon
 
 var speed = 300.0
-const JUMP_VELOCITY = -400.0
 var bullet_amount = 1
-var fire_rate = 1
-var lives = 3
+var fire_rate = 0.1
+var lives = 5
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = 0
@@ -17,6 +16,8 @@ signal shot_fired
 
 func _physics_process(delta):
 
+	if lives <= 0:
+		print("u ded")
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	if Input.is_action_pressed("ui_accept"):
@@ -35,6 +36,8 @@ func _physics_process(delta):
 
 func _ready():
 	# Instance the weapon and attach it to the player
+	
+	add_to_group("player")
 	weapon = weapon_scene.instantiate()
 	add_child(weapon)  # Add the weapon as a child of the player character
 	weapon.position = Vector2(0, -50)  # Adjust weapon's position relative to the player
