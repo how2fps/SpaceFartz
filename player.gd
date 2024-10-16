@@ -44,7 +44,9 @@ func _ready():
 	weapon.fire_rate = fire_rate
 	weapon.connect("shot_fired", _on_weapon_shot_fired)
 	upgrade_scene.connect("collected", _on_upgrade_collected)
-
+	
+func set_fire_rate(new_speed: float):
+	speed = new_speed
 
 func _on_weapon_shot_fired():
 	#print("Weapon shot fired!")

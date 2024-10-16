@@ -5,11 +5,13 @@ var upgrade_scene: PackedScene = load("res://upgrade.tscn")
 var enemy_weapon_scene: PackedScene = preload("res://enemy_weapon.tscn")
 
 @export var enemy_ship_speed = 50.0
+@onready var collision_area = $Area2D
 var bullet_amount = 1
 var lives = 3
 
 func _physics_process(delta):
 	position.y += enemy_ship_speed * delta
+	position.x += -1 * enemy_ship_speed * delta
 	if lives <= 0:
 		queue_free()
 		random.randomize()  # Randomize the generator seed
@@ -30,10 +32,11 @@ func _ready():
 	var enemy_weapon_instance = enemy_weapon_scene.instantiate()
 	add_child(enemy_weapon_instance)  # Add the weapon as a child of the player character
 	enemy_weapon_instance.position = Vector2(0, 50)  # Adjust weapon's position relative to the player
-	connect("area_entered", _on_area_entered)  # Optional, in case you want two-way detection
-	connect("body_entered", _on_body_entered)
+
+	collision_area.connect("body_entered", _on_body_entered)
 	
 func _on_body_entered(body):
+	print(body)
 	if body.is_in_group("player"):
 		print("Enemy collided with the player!")
 		body.lives -= 1  # Call player damage function
