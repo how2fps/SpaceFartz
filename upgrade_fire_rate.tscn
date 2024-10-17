@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://brvxeow6fr77i"]
 
 [ext_resource type="Script" path="res://upgrade_fire_rate.gd" id="1_s5gkm"]
-[ext_resource type="Texture2D" uid="uid://pkoggi2tvg3r" path="res://icon.svg" id="2_mihhx"]
+[ext_resource type="Texture2D" uid="uid://dgt2k1wnkx12w" path="res://Images/upgrade icons/bullet rate.png" id="2_givap"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xfuxd"]
 size = Vector2(128, 128)
@@ -18,4 +18,4 @@ shape = SubResource("RectangleShape2D_xfuxd")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-3.8147e-06, -3.8147e-06)
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_mihhx")
+texture = ExtResource("2_givap")

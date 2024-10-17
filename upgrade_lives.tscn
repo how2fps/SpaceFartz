@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://b4c3y4i5mr543"]
 
 [ext_resource type="Script" path="res://upgrade_lives.gd" id="1_rnmfp"]
-[ext_resource type="Texture2D" uid="uid://pkoggi2tvg3r" path="res://icon.svg" id="2_kbflf"]
+[ext_resource type="Texture2D" uid="uid://dws6g2ptdkkxu" path="res://Images/upgrade icons/hp icon.png" id="2_i63vv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xfuxd"]
 size = Vector2(128, 128)
@@ -19,4 +19,4 @@ shape = SubResource("RectangleShape2D_xfuxd")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-3.8147e-06, -3.8147e-06)
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_kbflf")
+texture = ExtResource("2_i63vv")
