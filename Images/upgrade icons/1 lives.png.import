@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://csxfbddmjd430"
-path="res://.godot/imported/bullet damage.png-5b2bbe2cccce5dc45b60c9ba2d0c96e8.ctex"
+uid="uid://nqpl24f0hswv"
+path="res://.godot/imported/1 lives.png-bbd6296e4179877b19fda0431691a911.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Images/upgrade icons/bullet damage.png"
-dest_files=["res://.godot/imported/bullet damage.png-5b2bbe2cccce5dc45b60c9ba2d0c96e8.ctex"]
+source_file="res://Images/upgrade icons/1 lives.png"
+dest_files=["res://.godot/imported/1 lives.png-bbd6296e4179877b19fda0431691a911.ctex"]
 
 [params]
 

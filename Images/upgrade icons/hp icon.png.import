@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://boe6olg3xsb6y"
-path="res://.godot/imported/movement speed.png-727ae266bd285e23ee891b9ab5e90686.ctex"
+uid="uid://dws6g2ptdkkxu"
+path="res://.godot/imported/hp icon.png-651da35e0bf5d1d41204880b2dca266a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Images/upgrade icons/movement speed.png"
-dest_files=["res://.godot/imported/movement speed.png-727ae266bd285e23ee891b9ab5e90686.ctex"]
+source_file="res://Images/upgrade icons/hp icon.png"
+dest_files=["res://.godot/imported/hp icon.png-651da35e0bf5d1d41204880b2dca266a.ctex"]
 
 [params]
 
