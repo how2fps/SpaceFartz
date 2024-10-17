@@ -21,6 +21,7 @@ var is_flashing := false  # Flag to prevent multiple flashes at once
 @export var horizontal_speed: float = 100.0
 @export var bullet_count = 1
 @export var lives = 3
+@export var bonus_lives = 0
 
 var change_direction_timer: float = 0.0  # Timer to change direction
 var horizontal_amplitude: float = 400.0  # How far left and right to move
@@ -30,22 +31,29 @@ var direction_change_interval: float = 1.0  # Time in seconds between direction 
 func _ready():
 	var chance = random.randf()  # Generate a random float between 0 and 1
 	
+	var enemy_weapon_instance = enemy_weapon_scene.instantiate()
 	if chance <= 0.33:
 		enemy_sprite.texture = preload("res://Images/green enemy.png")
-		lives = 1
+		lives = 1 + bonus_lives
 		horizontal_speed = 300
 		direction_change_interval = 0.5
+		enemy_weapon_instance.fire_rate = 0.3
+		enemy_weapon_instance.bullet_speed_multiplier = 1
 	elif chance > 0.33 and chance <= 0.66:
 		enemy_sprite.texture = preload("res://Images/orange enemy.png")
-		lives = 3
+		lives = 3 + bonus_lives
 		horizontal_speed = 200
 		direction_change_interval = 1.3
+		enemy_weapon_instance.fire_rate = 0.5
+		enemy_weapon_instance.bullet_speed_multiplier = 0.5
 	else:
 		enemy_sprite.texture = preload("res://Images/purple enemy.png")
-		lives = 5
+		lives = 5 + bonus_lives
 		horizontal_speed = 100
 		direction_change_interval = 2.2
-		
+		enemy_weapon_instance.fire_rate = 0.75
+		enemy_weapon_instance.bullet_speed_multiplier = 0.25
+	add_child(enemy_weapon_instance)  # Add the weapon as a child of the player character
 	original_color = enemy_sprite.modulate
 	main_scene = get_tree().current_scene
 	add_to_group("enemies")
@@ -55,8 +63,7 @@ func _ready():
 		direction = 1  # Move right
 	else:
 		direction = -1  # Move left
-	var enemy_weapon_instance = enemy_weapon_scene.instantiate()
-	add_child(enemy_weapon_instance)  # Add the weapon as a child of the player character
+
 	enemy_weapon_instance.position = Vector2(0, 50)  # Adjust weapon's position relative to the player
 	collision_area.connect("body_entered", _on_body_entered)
 
