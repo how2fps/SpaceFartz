@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dvdvkeaqifft3"
+path="res://.godot/imported/normal laser.mp3-ed0f18cfa21e24384ed9a4baad10025f.mp3str"
+
+[deps]
+
+source_file="res://normal laser.mp3"
+dest_files=["res://.godot/imported/normal laser.mp3-ed0f18cfa21e24384ed9a4baad10025f.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

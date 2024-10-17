@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://d3hj1pjuymr0l"]
+[gd_scene load_steps=5 format=3 uid="uid://d3hj1pjuymr0l"]
 
 [ext_resource type="Script" path="res://bullet.gd" id="1_6u6m3"]
 [ext_resource type="Texture2D" uid="uid://cl6d8atqux55n" path="res://Images/main char laser.png" id="2_3aga6"]
+[ext_resource type="AudioStream" uid="uid://dvdvkeaqifft3" path="res://normal laser.mp3" id="3_6chro"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_odjla"]
 
@@ -16,3 +17,8 @@ shape = SubResource("CircleShape2D_odjla")
 position = Vector2(0, 7)
 scale = Vector2(0.292969, 0.292969)
 texture = ExtResource("2_3aga6")
+
+[node name="BulletSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_6chro")
+volume_db = -15.0
+pitch_scale = 0.92

@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://duo4pxsgg3li0"]
+[gd_scene load_steps=6 format=3 uid="uid://duo4pxsgg3li0"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_w5si8"]
 [ext_resource type="Script" path="res://Background.gd" id="2_3vkts"]
 [ext_resource type="Texture2D" uid="uid://dfnxpgwaxlvp2" path="res://Images/SPACEFARTZ bg.jpg" id="3_a22p8"]
+[ext_resource type="AudioStream" uid="uid://ef8hjtvxyqmj" path="res://Sounds/boss-sound.wav" id="4_kwg5r"]
+[ext_resource type="Texture2D" uid="uid://bnt5wpvnhkvuc" path="res://Images/upgrade icons/0 lives.png" id="5_h0ea3"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_w5si8")
@@ -17,13 +19,6 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PlayerLivesLabel" type="RichTextLabel" parent="."]
-z_index = 1
-offset_left = 21.0
-offset_top = 889.0
-offset_right = 171.0
-offset_bottom = 929.0
-
 [node name="Background" type="Node2D" parent="."]
 script = ExtResource("2_3vkts")
 
@@ -36,3 +31,11 @@ texture = ExtResource("3_a22p8")
 position = Vector2(270, 1439)
 scale = Vector2(0.239667, 0.239667)
 texture = ExtResource("3_a22p8")
+
+[node name="BossMusic" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_kwg5r")
+
+[node name="HPSprite" type="Sprite2D" parent="."]
+position = Vector2(135.688, 937.25)
+scale = Vector2(0.480264, 0.480264)
+texture = ExtResource("5_h0ea3")

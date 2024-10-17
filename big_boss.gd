@@ -2,74 +2,111 @@ extends CharacterBody2D
 
 var random = RandomNumberGenerator.new()
 
-@export var boss_weapon_scene: PackedScene = preload("res://big_boss.tscn")
-@export var boss_speed = 30.0  # Speed of the boss
-@export var boss_lives = 20  # Higher health for the boss
-@export var amplitude = 200.0  # Oscillation width for the boss movement
-@export var frequency = 0.5  # How fast the boss oscillates
-@export var attack_interval = 1.5  # Time between boss attacks
+var main_scene: Node
 
-var boss_direction = 1  # 1 for right, -1 for left
-var attack_timer = 0.5  # Timer to track when the boss can attack
-var oscillation_timer = 0.5  # Timer to track movement oscillation
+var upgrade_fire_rate_scene: PackedScene = load("res://upgrade_fire_rate.tscn")
+var upgrade_movement_speed_scene: PackedScene = load("res://upgrade_movement_speed.tscn")
+var upgrade_lives_scene: PackedScene = load("res://upgrade_lives.tscn")
+var upgrade_bullet_count_scene: PackedScene = load("res://upgrade_bullet_count.tscn")
+
+var boss_weapon_scene: PackedScene = preload("res://boss_weapon.tscn")
+
+@onready var boss_sprite = $Sprite2D  # Adjust to point to your Sprite2D node
+var flash_time := 0.1  # Duration of the flash effect
+var original_color : Color  # Store the original sprite color
+var is_flashing := false  # Flag to prevent multiple flashes at once
+
+@onready var collision_area = $Area2D
+@export var vertical_speed: float = 40.0
+@export var bullet_count = 1
+@export var lives = 1000
+@export var bonus_lives = 0
 
 func _ready():
-	# Set boss's initial position at the top of the screen
-	position.x = get_viewport().size.x / 2  # Start in the center horizontally
-	position.y = 50  # Near the top of the screen
+	position.y = -300
+	var chance = random.randf()  # Generate a random float between 0 and 1
+	if chance <= 0.33:
+		boss_sprite.texture = preload("res://Images/purple boss.png")
+	elif chance > 0.33 and chance <= 0.66:
+		boss_sprite.texture = preload("res://Images/orange boss.png")
+	else:
+		boss_sprite.texture = preload("res://Images/green boss.png")
+		
+	var boss_weapon_left_instance = boss_weapon_scene.instantiate()
+	var boss_weapon_right_instance = boss_weapon_scene.instantiate()
+	var boss_weapon_middle_instance = boss_weapon_scene.instantiate()
+	
+	add_child(boss_weapon_middle_instance)
+	add_child(boss_weapon_left_instance)  # Add the weapon as a child of the player character
+	add_child(boss_weapon_right_instance)  # Add the weapon as a child of the player character
+	original_color = boss_sprite.modulate
+	main_scene = get_tree().current_scene
+	add_to_group("boss")
 
-	# Initialize the boss weapon system
-	var boss_weapon_instance = boss_weapon_scene.instantiate()
-	add_child(boss_weapon_instance)
-	boss_weapon_instance.position = Vector2(0, 100)
+	boss_weapon_left_instance.position = Vector2(100, 250)  # Adjust weapon's position relative to the player
+	boss_weapon_right_instance.position = Vector2(440, 250)  # Adjust weapon's position relative to the player
+	#collision_area.connect("body_entered", _on_body_entered)
 
-	connect("area_entered", _on_area_entered)  # Detect bullet collisions
-	random.randomize()  # Randomize the generator seed
 
 func _physics_process(delta):
-	# Move horizontally in a sinusoidal (oscillating) pattern
-	oscillation_timer += delta
-	position.x += amplitude * sin(frequency * oscillation_timer)  # Oscillation effect
-
-	# Allow the boss to attack at intervals
-	attack_timer += delta
-	if attack_timer >= attack_interval:
-		attack()
-		attack_timer = 0  # Reset the attack timer
-
-	# Destroy the boss if its health (lives) reaches 0
-	if boss_lives <= 0:
+	if position.y < 50:
+		position.y += vertical_speed * delta
+   # Update the timer for changing direction
+	
+	if lives <= 0:
 		queue_free()
-		print("Boss defeated!")
-
+		main_scene.update_score(50)
+		main_scene.enemy_can_spawn = true
+		main_scene.boss_is_spawned = false
+		main_scene.enemy_timer.set_wait_time(20)
+		main_scene.enemy_timer.set_one_shot(false)
+		main_scene.enemy_timer.start()
+		random.randomize()  # Randomize the generator seed
+		var chance = random.randf()  # Generate a random float between 0 and 1
+		if chance <= 0.5:
+			var upgrade_roll = random.randf()
+			if upgrade_roll <= 0.30:
+				var upgrade_fire_rate_instance = upgrade_fire_rate_scene.instantiate()
+				main_scene.add_child(upgrade_fire_rate_instance)  # Add it to the scene
+				upgrade_fire_rate_instance.position = global_position  # Set the position of the upgrade
+				print("FIRE RATE.")
+			if upgrade_roll > 0.30 and upgrade_roll <= 0.60:
+				var upgrade_movement_speed_instance = upgrade_movement_speed_scene.instantiate()
+				main_scene.add_child(upgrade_movement_speed_instance)  # Add it to the scene
+				upgrade_movement_speed_instance.position = global_position  # Set the position of the upgrade
+				print("MOVEMENT.")
+			if upgrade_roll > 0.60 and upgrade_roll <= 0.90:
+				var upgrade_lives_instance = upgrade_lives_scene.instantiate()
+				main_scene.add_child(upgrade_lives_instance)  # Add it to the scene
+				upgrade_lives_instance.position = global_position  # Set the position of the upgrade
+				print("HEALTH.")
+			if upgrade_roll > 0.90:
+				var upgrade_bullet_count_instance = upgrade_bullet_count_scene.instantiate()
+				main_scene.add_child(upgrade_bullet_count_instance)  # Add it to the scene
+				upgrade_bullet_count_instance.position = global_position  # Set the position of the upgrade
+				print("BULLET COUNT.")
+		else:
+			print("No upgrade spawned this time.")
 	move_and_slide()
-
-func attack():
-	# Boss's attack behavior (shoots a series of bullets or a unique attack)
-	var boss_weapon_instance = boss_weapon_scene.instantiate()
-	add_child(boss_weapon_instance)
-	boss_weapon_instance.position = global_position  # Set the weapon's position relative to the boss
-	print("Boss is attacking!")
-
-func _on_area_entered(area):
-	if area.name == "Bullet":  # If the boss is hit by the player's bullet
-		print("Boss hit by bullet!")
-		boss_lives -= 1  # Decrease boss's health
-		if boss_lives <= 0:
-			queue_free()  # Remove the boss from the scene when health reaches 0
-
+	
 func _on_body_entered(body):
 	if body.is_in_group("player"):
-		print("Boss collided with the player!")
-		body.lives -= 1  # Deal damage to the player
-		queue_free()  # Optionally remove the boss
+		print("Enemy collided with the player!")
+		body.lives -= 1  # Call player damage function
+		queue_free()  # Optional: destroy enemy
 
+func start_flash():
+	is_flashing = true
+	boss_sprite.modulate = Color(2, 2, 2)  # Brighten the sprite (lighter color)
+	
+	# Use a timer with a callback to reset the sprite color after `flash_time`
+	var flash_timer = Timer.new()
+	flash_timer.wait_time = flash_time
+	flash_timer.one_shot = true
+	flash_timer.timeout.connect(reset_flash)
+	add_child(flash_timer)
+	flash_timer.start()
 
-# Called when the node enters the scene tree for the first time.
-#func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta: float) -> void:
-	pass
+func reset_flash():
+	boss_sprite.modulate = original_color  # Revert the color to its original state
+	is_flashing = false

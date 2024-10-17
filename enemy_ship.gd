@@ -10,6 +10,7 @@ var upgrade_lives_scene: PackedScene = load("res://upgrade_lives.tscn")
 var upgrade_bullet_count_scene: PackedScene = load("res://upgrade_bullet_count.tscn")
 
 var enemy_weapon_scene: PackedScene = preload("res://enemy_weapon.tscn")
+@onready var explode_sound_player = $ExplodeSoundPlayer
 
 @onready var enemy_sprite = $Sprite2D  # Adjust to point to your Sprite2D node
 var flash_time := 0.1  # Duration of the flash effect
@@ -20,7 +21,7 @@ var is_flashing := false  # Flag to prevent multiple flashes at once
 @export var vertical_speed: float = 40.0
 @export var horizontal_speed: float = 100.0
 @export var bullet_count = 1
-@export var lives = 3
+@export var lives = 1
 @export var bonus_lives = 0
 
 var change_direction_timer: float = 0.0  # Timer to change direction
@@ -37,22 +38,25 @@ func _ready():
 		lives = 1 + bonus_lives
 		horizontal_speed = 300
 		direction_change_interval = 0.5
-		enemy_weapon_instance.fire_rate = 0.3
-		enemy_weapon_instance.bullet_speed_multiplier = 1
+		enemy_weapon_instance.fire_rate = 1
+		enemy_weapon_instance.bullet_speed_multiplier = 1.5
+		enemy_weapon_instance.bullet_count = 1
 	elif chance > 0.33 and chance <= 0.66:
 		enemy_sprite.texture = preload("res://Images/orange enemy.png")
-		lives = 3 + bonus_lives
+		lives = 2 + bonus_lives
 		horizontal_speed = 200
 		direction_change_interval = 1.3
-		enemy_weapon_instance.fire_rate = 0.5
+		enemy_weapon_instance.fire_rate = 1
 		enemy_weapon_instance.bullet_speed_multiplier = 0.5
+		enemy_weapon_instance.bullet_count = 1
 	else:
 		enemy_sprite.texture = preload("res://Images/purple enemy.png")
-		lives = 5 + bonus_lives
+		lives = 4 + bonus_lives
 		horizontal_speed = 100
 		direction_change_interval = 2.2
-		enemy_weapon_instance.fire_rate = 0.75
+		enemy_weapon_instance.fire_rate = 1.5
 		enemy_weapon_instance.bullet_speed_multiplier = 0.25
+		enemy_weapon_instance.bullet_count = 2
 	add_child(enemy_weapon_instance)  # Add the weapon as a child of the player character
 	original_color = enemy_sprite.modulate
 	main_scene = get_tree().current_scene
@@ -81,13 +85,14 @@ func _physics_process(delta):
 		change_direction_timer = 0.0  # Reset timer
 	# Move left or right
 	position.x += direction * horizontal_speed * delta
-
+	
 	if lives <= 0:
+		explode_sound_player.play()
 		queue_free()
 		main_scene.update_score(1)
 		random.randomize()  # Randomize the generator seed
 		var chance = random.randf()  # Generate a random float between 0 and 1
-		if chance <= 0.2:
+		if chance <= 0.5:
 			var upgrade_roll = random.randf()
 			if upgrade_roll <= 0.30:
 				var upgrade_fire_rate_instance = upgrade_fire_rate_scene.instantiate()

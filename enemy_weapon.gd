@@ -6,6 +6,7 @@ var player: CharacterBody2D
 var random = RandomNumberGenerator.new()
 @export var fire_rate: float = 1.0
 @export var bullet_speed_multiplier: float = 1.0
+@export var bullet_count: int = 1
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	player = get_tree().get_root().get_node("Main").player
@@ -19,7 +20,7 @@ func shoot():
 	if current_time - last_shot_time >= fire_rate * 3000:
 		random.randomize()  # Randomize the generator seed
 		var chance = random.randf()  # Generate a random float between 0 and 1
-		for i in range(2):
+		for i in range(bullet_count):
 			var enemy_bullet_instance = enemy_bullet_scene.instantiate()
 			enemy_bullet_instance.speed = enemy_bullet_instance.speed * bullet_speed_multiplier
 			enemy_bullet_instance.position = global_position

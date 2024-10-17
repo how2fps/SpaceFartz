@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bwaqxm00f1m8c"]
+
+[ext_resource type="Script" path="res://boss_weapon.gd" id="1_ind52"]
+[ext_resource type="Texture2D" uid="uid://pkoggi2tvg3r" path="res://icon.svg" id="2_4se2u"]
+
+[node name="BossWeapon" type="Node2D"]
+position = Vector2(117, 25)
+script = ExtResource("1_ind52")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(29, 21)
+scale = Vector2(0.226562, 0.5)
+texture = ExtResource("2_4se2u")

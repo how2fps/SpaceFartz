@@ -21,7 +21,7 @@ var weapon: Node
 var screen_size: Vector2
 var collision_size: Vector2
 
-var _lives: int = 5
+var _lives: int = 10
 var _movement_speed: float = 300.0
 var _fire_rate: float = 0.5
 var _bullet_count: int = 1
@@ -96,7 +96,6 @@ func start_flash():
 
 # Trigger a flash
 func _trigger_flash():
-	print(current_flashes)
 	if current_flashes % 2 == 0:
 		player_sprite.modulate = flash_color  # Change to flash color
 	else:

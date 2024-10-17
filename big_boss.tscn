@@ -1,13 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://b2byolyfxflfk"]
+[gd_scene load_steps=4 format=3 uid="uid://b2byolyfxflfk"]
 
 [ext_resource type="Script" path="res://big_boss.gd" id="1_phbi2"]
+[ext_resource type="Texture2D" uid="uid://cwdbk1i1n8m5" path="res://Images/purple boss.png" id="2_t6g1l"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_xltbp"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h2tws"]
+size = Vector2(541, 460)
 
 [node name="BigBoss" type="CharacterBody2D"]
 script = ExtResource("1_phbi2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_xltbp")
+position = Vector2(270.5, 80)
+shape = SubResource("RectangleShape2D_h2tws")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(269.859, 73.9153)
+scale = Vector2(0.497653, 0.497653)
+texture = ExtResource("2_t6g1l")

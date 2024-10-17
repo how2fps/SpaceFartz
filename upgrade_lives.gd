@@ -2,6 +2,7 @@ extends Area2D
 
 @onready var player = get_tree().get_root().get_node("Main").player  # Adjust the path to your player node
 var speed: float = 200.0
+@onready var upgrade_sound_player = $UpgradeSoundPlayer
 
 func _ready():
 	# Connect the body_entered signal to a function
@@ -9,7 +10,9 @@ func _ready():
 
 func _on_body_entered(body):
 	if body == player:
-		player.lives += 1
+		upgrade_sound_player.play()
+		if player.lives < 10:
+			player.lives += 1
 		queue_free()
 		
 func _process(delta):
