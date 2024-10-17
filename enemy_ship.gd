@@ -11,6 +11,11 @@ var upgrade_bullet_count_scene: PackedScene = load("res://upgrade_bullet_count.t
 
 var enemy_weapon_scene: PackedScene = preload("res://enemy_weapon.tscn")
 
+@onready var enemy_sprite = $Sprite2D  # Adjust to point to your Sprite2D node
+var flash_time := 0.1  # Duration of the flash effect
+var original_color : Color  # Store the original sprite color
+var is_flashing := false  # Flag to prevent multiple flashes at once
+
 @onready var collision_area = $Area2D
 @export var vertical_speed: float = 40.0
 @export var horizontal_speed: float = 100.0
@@ -23,6 +28,25 @@ var direction: int = 1  # Direction of horizontal movement (1 for right, -1 for 
 var direction_change_interval: float = 1.0  # Time in seconds between direction changes
 
 func _ready():
+	var chance = random.randf()  # Generate a random float between 0 and 1
+	
+	if chance <= 0.33:
+		enemy_sprite.texture = preload("res://Images/green enemy.png")
+		lives = 1
+		horizontal_speed = 300
+		direction_change_interval = 0.5
+	elif chance > 0.33 and chance <= 0.66:
+		enemy_sprite.texture = preload("res://Images/orange enemy.png")
+		lives = 3
+		horizontal_speed = 200
+		direction_change_interval = 1.3
+	else:
+		enemy_sprite.texture = preload("res://Images/purple enemy.png")
+		lives = 5
+		horizontal_speed = 100
+		direction_change_interval = 2.2
+		
+	original_color = enemy_sprite.modulate
 	main_scene = get_tree().current_scene
 	add_to_group("enemies")
 	vertical_speed = randf_range(vertical_speed/2, vertical_speed)
@@ -88,3 +112,18 @@ func _on_body_entered(body):
 		body.lives -= 1  # Call player damage function
 		queue_free()  # Optional: destroy enemy
 
+func start_flash():
+	is_flashing = true
+	enemy_sprite.modulate = Color(2, 2, 2)  # Brighten the sprite (lighter color)
+	
+	# Use a timer with a callback to reset the sprite color after `flash_time`
+	var flash_timer = Timer.new()
+	flash_timer.wait_time = flash_time
+	flash_timer.one_shot = true
+	flash_timer.timeout.connect(reset_flash)
+	add_child(flash_timer)
+	flash_timer.start()
+
+func reset_flash():
+	enemy_sprite.modulate = original_color  # Revert the color to its original state
+	is_flashing = false

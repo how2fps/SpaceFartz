@@ -3,6 +3,8 @@ extends Node2D
 @onready var enemy_timer = Timer.new()
 @onready var boss_timer = Timer.new()
 
+@onready var background = $Background
+
 var player_scene: PackedScene = load("res://player.tscn")
 var enemy_ship_scene: PackedScene = load("res://enemy_ship.tscn")
 var enemy_lives: int = 3
@@ -10,12 +12,13 @@ var enemy_horizontal_speed: float = 100.0
 var enemy_can_spawn: bool = true
 
 var player: CharacterBody2D
-var score: int = 0  # Initialize the score variable
+@export var score: int = 0  # Initialize the score variable
 
 var spawn_timer: float = 0.0  # Timer to control spawn frequency
 var spawn_interval: float = 1.0  # Time interval between spawns
 
 @onready var score_label = $ScoreLabel  # Assuming ScoreLabel is a Label node in your scene
+@onready var player_lives_label = $PlayerLivesLabel  # Assuming ScoreLabel is a Label node in your scene
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -39,6 +42,7 @@ func _ready():
 	
 func _on_enemy_timer_timeout():
 	enemy_lives += 1
+	background.scroll_speed += 20
 	print("New enemy lives: ", enemy_lives)
 	
 func _on_boss_timer_timeout():
@@ -53,6 +57,7 @@ func spawn_boss():
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	player_lives_label.text = "Lives: " + str(player.lives)
 	if enemy_can_spawn:
 		spawn_timer += delta  # Update the spawn timer
 		if spawn_timer >= spawn_interval:
@@ -77,3 +82,5 @@ func update_score(amount: int):
 
 func update_score_display():
 	score_label.text = "Score: " + str(score)  # Update the Label text
+	
+

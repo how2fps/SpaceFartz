@@ -16,7 +16,7 @@ func shoot():
 		for i in range(bullet_count):
 			var bullet_instance = bullet_scene.instantiate()
 			bullet_instance.position = global_position
-			bullet_instance.position.y -= 70  # Set bullet at the weapon's position
+			bullet_instance.position.y -= 40  # Set bullet at the weapon's position
 			bullet_instance.position.x += (i - middle_index) * spread  # Calculate horizontal offset
 			get_tree().current_scene.add_child(bullet_instance)
 			

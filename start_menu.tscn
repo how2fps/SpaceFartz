@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://dqbo1p08aij1o"]
+[gd_scene load_steps=4 format=3 uid="uid://dqbo1p08aij1o"]
 
 [ext_resource type="Script" path="res://start_menu.gd" id="1_kjpq7"]
+[ext_resource type="Texture2D" uid="uid://dfnxpgwaxlvp2" path="res://Images/SPACEFARTZ bg.jpg" id="2_mu0qj"]
+[ext_resource type="Texture2D" uid="uid://b51n0qbwk57p2" path="res://Images/spacefartz logo.png" id="3_frfot"]
 
 [node name="StartMenu" type="Control"]
 layout_mode = 3
@@ -11,20 +13,42 @@ offset_right = 313.0
 offset_bottom = 594.0
 script = ExtResource("1_kjpq7")
 
-[node name="Label" type="Label" parent="."]
+[node name="StartLabel" type="Label" parent="."]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 
 [node name="StartButton" type="Button" parent="."]
+z_index = 1
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.592
 anchor_bottom = 0.843
 offset_left = -3.0
-offset_top = -1.0
-offset_right = 1.32001
+offset_top = -35.0
+offset_right = 1.224
 offset_bottom = 2.28
 text = "Start"
+
+[node name="HighScoreLabel" type="Label" parent="."]
+z_index = 1
+layout_mode = 0
+offset_left = 148.0
+offset_top = -63.0
+offset_right = 257.0
+offset_bottom = -40.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(210.5, -73.7778)
+scale = Vector2(0.240444, 0.240444)
+texture = ExtResource("2_mu0qj")
+
+[node name="Title" type="Sprite2D" parent="."]
+position = Vector2(210, -297)
+scale = Vector2(0.88, 0.88)
+texture = ExtResource("3_frfot")
 
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]

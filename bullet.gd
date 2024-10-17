@@ -9,6 +9,7 @@ func _ready():
 func _on_body_entered(body):
 	if body.is_in_group("enemies"):
 		body.lives -= 1
+		body.start_flash()
 		queue_free()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

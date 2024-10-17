@@ -1,14 +1,38 @@
-[gd_scene load_steps=2 format=3 uid="uid://duo4pxsgg3li0"]
+[gd_scene load_steps=4 format=3 uid="uid://duo4pxsgg3li0"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_w5si8"]
+[ext_resource type="Script" path="res://Background.gd" id="2_3vkts"]
+[ext_resource type="Texture2D" uid="uid://dfnxpgwaxlvp2" path="res://Images/SPACEFARTZ bg.jpg" id="3_a22p8"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_w5si8")
 
 [node name="ScoreLabel" type="Label" parent="."]
+z_index = 1
 offset_left = 425.0
 offset_top = 1.0
 offset_right = 539.0
 offset_bottom = 46.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="PlayerLivesLabel" type="RichTextLabel" parent="."]
+z_index = 1
+offset_left = 21.0
+offset_top = 889.0
+offset_right = 171.0
+offset_bottom = 929.0
+
+[node name="Background" type="Node2D" parent="."]
+script = ExtResource("2_3vkts")
+
+[node name="BackgroundMain" type="Sprite2D" parent="Background"]
+position = Vector2(270, 480)
+scale = Vector2(0.24, 0.24)
+texture = ExtResource("3_a22p8")
+
+[node name="BackgroundRepeat" type="Sprite2D" parent="Background"]
+position = Vector2(270, 1439)
+scale = Vector2(0.239667, 0.239667)
+texture = ExtResource("3_a22p8")
