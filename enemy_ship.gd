@@ -12,7 +12,8 @@ var upgrade_bullet_count_scene: PackedScene = load("res://upgrade_bullet_count.t
 var enemy_weapon_scene: PackedScene = preload("res://enemy_weapon.tscn")
 
 @onready var collision_area = $Area2D
-@export var enemy_ship_speed = 50.0
+@export var vertical_speed: float = 40.0
+@export var horizontal_speed: float = 100.0
 @export var bullet_count = 1
 @export var lives = 3
 
@@ -24,6 +25,8 @@ var direction_change_interval: float = 1.0  # Time in seconds between direction 
 func _ready():
 	main_scene = get_tree().current_scene
 	add_to_group("enemies")
+	vertical_speed = randf_range(vertical_speed/2, vertical_speed)
+	horizontal_speed = randf_range(horizontal_speed/2, horizontal_speed)
 	if randi() % 2 == 0:
 		direction = 1  # Move right
 	else:
@@ -35,13 +38,9 @@ func _ready():
 
 
 func _physics_process(delta):
-	position.y += enemy_ship_speed * delta
-	# Calculate the horizontal movement using sine wave
-	position.x += direction * enemy_ship_speed * delta
-
+	position.y += vertical_speed * delta
    # Update the timer for changing direction
 	change_direction_timer += delta
-
 	# Change direction randomly at specified intervals
 	if change_direction_timer >= direction_change_interval:
 		if randi() % 2 == 0:
@@ -49,16 +48,15 @@ func _physics_process(delta):
 		else:
 			direction = -1  # Move left
 		change_direction_timer = 0.0  # Reset timer
-
 	# Move left or right
-	position.x += direction * enemy_ship_speed * delta
-	
+	position.x += direction * horizontal_speed * delta
+
 	if lives <= 0:
 		queue_free()
 		main_scene.update_score(1)
 		random.randomize()  # Randomize the generator seed
 		var chance = random.randf()  # Generate a random float between 0 and 1
-		if chance <= 1:
+		if chance <= 0.2:
 			var upgrade_roll = random.randf()
 			if upgrade_roll <= 0.30:
 				var upgrade_fire_rate_instance = upgrade_fire_rate_scene.instantiate()
@@ -89,11 +87,4 @@ func _on_body_entered(body):
 		print("Enemy collided with the player!")
 		body.lives -= 1  # Call player damage function
 		queue_free()  # Optional: destroy enemy
-		
-func _on_area_entered(area):                                        
-	if area.name == "Bullet":  # If the enemy detects the bullet
-		print("Enemy hit by bullet!")
-		lives -= 1
-		if lives <= 0:
-			queue_free()  # Destroy the enemy when health reaches 0
 

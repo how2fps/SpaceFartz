@@ -1,9 +1,14 @@
 extends CharacterBody2D
 
+@onready var collision_shape = $CollisionShape2D
+
 @export var weapon_scene: PackedScene = preload("res://weapon.tscn")
 @export var upgrade_fire_rate_scene: PackedScene = preload("res://upgrade_fire_rate.tscn")
-var weapon
 
+var weapon: Node
+
+var screen_size: Vector2
+var collision_size: Vector2
 
 var _lives: int = 5
 var _movement_speed: float = 300.0
@@ -32,6 +37,9 @@ var _bullet_count: int = 1
 		print("Lives new value: ", value)
 		_lives = value
 		
+		if lives <= 0:
+			print('u ded')
+		
 @export var bullet_count: int = 1:
 	get:
 		return _bullet_count
@@ -43,9 +51,6 @@ var _bullet_count: int = 1
 signal shot_fired
 
 func _physics_process(delta):
-
-	if _lives <= 0:
-		pass
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	if Input.is_action_pressed("ui_accept"):
@@ -61,8 +66,17 @@ func _physics_process(delta):
 	else:
 		velocity.y = move_toward(velocity.y, 0, _movement_speed)
 	move_and_slide()
+	position.x = clamp(position.x, collision_size.x / 2, screen_size.x - collision_size.x / 2)
+	position.y = clamp(position.y, collision_size.y / 2, screen_size.y - collision_size.y / 2)
 
 func _ready():
+	var shape = collision_shape.shape
+	if shape is RectangleShape2D:
+		collision_size =  (shape.extents * 2)  # Get the size of the rectangle shape (double the extents)
+	else:
+		collision_size =  Vector2(shape.radius * 2, shape.radius * 2)  # Get the size of the circle
+	# Handle other shapes if needed
+	screen_size = get_viewport_rect().size  # Get the screen size
 	add_to_group("player")
 	weapon = weapon_scene.instantiate()
 	add_child(weapon)  # Add the weapon as a child of the player character
